@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RentAIAgent.ai - Hire AI Agents for Any Task</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="nav">
+      <div class="nav-brand">
+        <i class="fas fa-robot"></i>
+        <span>RentAIAgent.ai</span>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#agents">AI Agents</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn-secondary">Sign In</button>
+        <button class="btn-primary">Get Started</button>
+      </div>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Hire AI Agents for Any Task</h1>
+        <p class="hero-subtitle">Access powerful AI agents on-demand. No development required. Pay only for what you use.</p>
+        <div class="hero-actions">
+          <button class="btn-primary btn-large">Browse AI Agents</button>
+          <button class="btn-secondary btn-large">Watch Demo</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-number">500+</span>
+            <span class="stat-label">AI Agents</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">10K+</span>
+            <span class="stat-label">Happy Users</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">99.9%</span>
+            <span class="stat-label">Uptime</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="floating-card">
+          <i class="fas fa-brain"></i>
+          <span>AI Processing</span>
+        </div>
+        <div class="floating-card">
+          <i class="fas fa-chart-line"></i>
+          <span>Analytics</span>
+        </div>
+        <div class="floating-card">
+          <i class="fas fa-language"></i>
+          <span>Translation</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">Why Choose RentAIAgent.ai?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h3>Instant Access</h3>
+          <p>Deploy AI agents in seconds. No setup, no coding required.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
+          <h3>Pay Per Use</h3>
+          <p>Only pay for what you use. No monthly subscriptions or hidden fees.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3>Enterprise Security</h3>
+          <p>Bank-level security with end-to-end encryption for all data.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-cogs"></i>
+          </div>
+          <h3>Customizable</h3>
+          <p>Configure agents to match your specific requirements and workflows.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Agents Section -->
+  <section id="agents" class="agents">
+    <div class="container">
+      <h2 class="section-title">Popular AI Agents</h2>
+      <p class="section-subtitle">Choose from our library of specialized AI agents</p>
+
+      <div class="agent-categories">
+        <button class="category-btn active" data-category="all">All Agents</button>
+        <button class="category-btn" data-category="content">Content</button>
+        <button class="category-btn" data-category="business">Business</button>
+        <button class="category-btn" data-category="data">Data Analysis</button>
+        <button class="category-btn" data-category="customer">Customer Service</button>
+      </div>
+
+      <div class="agents-grid">
+        <!-- Content Writing Agent -->
+        <div class="agent-card" data-category="content">
+          <div class="agent-header">
+            <div class="agent-icon">
+              <i class="fas fa-pen-fancy"></i>
+            </div>
+            <div class="agent-rating">
+              <span class="rating">4.9</span>
+              <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <h3 class="agent-title">Content Writer Pro</h3>
+          <p class="agent-description">Creates high-quality blog posts, articles, and marketing copy in any tone or style.</p>
+          <div class="agent-features">
+            <span class="feature-tag">SEO Optimized</span>
+            <span class="feature-tag">Multi-language</span>
+            <span class="feature-tag">Plagiarism Free</span>
+          </div>
+          <div class="agent-pricing">
+            <span class="price">$0.05</span>
+            <span class="price-unit">per 100 words</span>
+          </div>
+          <div class="agent-use-cases">
+            <h4>Use Cases:</h4>
+            <ul>
+              <li>Blog post creation</li>
+              <li>Product descriptions</li>
+              <li>Social media content</li>
+              <li>Email campaigns</li>
+            </ul>
+          </div>
+          <button class="btn-primary agent-hire-btn">Hire Agent</button>
+        </div>
+
+        <!-- Data Analyst Agent -->
+        <div class="agent-card" data-category="data">
+          <div class="agent-header">
+            <div class="agent-icon">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+            <div class="agent-rating">
+              <span class="rating">4.8</span>
+              <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <h3 class="agent-title">Data Analyst Expert</h3>
+          <p class="agent-description">Analyzes complex datasets and generates actionable insights with visualizations.</p>
+          <div class="agent-features">
+            <span class="feature-tag">Excel/CSV</span>
+            <span class="feature-tag">Visualizations</span>
+            <span class="feature-tag">Predictions</span>
+          </div>
+          <div class="agent-pricing">
+            <span class="price">$2.00</span>
+            <span class="price-unit">per analysis</span>
+          </div>
+          <div class="agent-use-cases">
+            <h4>Use Cases:</h4>
+            <ul>
+              <li>Sales performance analysis</li>
+              <li>Market trend identification</li>
+              <li>Customer behavior insights</li>
+              <li>Financial forecasting</li>
+            </ul>
+          </div>
+          <button class="btn-primary agent-hire-btn">Hire Agent</button>
+        </div>
+
+        <!-- Customer Service Agent -->
+        <div class="agent-card" data-category="customer">
+          <div class="agent-header">
+            <div class="agent-icon">
+              <i class="fas fa-headset"></i>
+            </div>
+            <div class="agent-rating">
+              <span class="rating">4.7</span>
+              <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <h3 class="agent-title">Customer Support Bot</h3>
+          <p class="agent-description">24/7 customer support with natural language processing and sentiment analysis.</p>
+          <div class="agent-features">
+            <span class="feature-tag">24/7 Available</span>
+            <span class="feature-tag">Multi-channel</span>
+            <span class="feature-tag">Sentiment Analysis</span>
+          </div>
+          <div class="agent-pricing">
+            <span class="price">$0.10</span>
+            <span class="price-unit">per conversation</span>
+          </div>
+          <div class="agent-use-cases">
+            <h4>Use Cases:</h4>
+            <ul>
+              <li>Live chat support</li>
+              <li>Email ticket handling</li>
+              <li>FAQ automation</li>
+              <li>Order status inquiries</li>
+            </ul>
+          </div>
+          <button class="btn-primary agent-hire-btn">Hire Agent</button>
+        </div>
+
+        <!-- Social Media Manager Agent -->
+        <div class="agent-card" data-category="content">
+          <div class="agent-header">
+            <div class="agent-icon">
+              <i class="fas fa-share-alt"></i>
+            </div>
+            <div class="agent-rating">
+              <span class="rating">4.6</span>
+              <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <h3 class="agent-title">Social Media Manager</h3>
+          <p class="agent-description">Creates and schedules engaging social media content across all platforms.</p>
+          <div class="agent-features">
+            <span class="feature-tag">Auto-scheduling</span>
+            <span class="feature-tag">Hashtag Research</span>
+            <span class="feature-tag">Analytics</span>
+          </div>
+          <div class="agent-pricing">
+            <span class="price">$1.50</span>
+            <span class="price-unit">per post</span>
+          </div>
+          <div class="agent-use-cases">
+            <h4>Use Cases:</h4>
+            <ul>
+              <li>Content calendar creation</li>
+              <li>Hashtag optimization</li>
+              <li>Engagement tracking</li>
+              <li>Competitor analysis</li>
+            </ul>
+          </div>
+          <button class="btn-primary agent-hire-btn">Hire Agent</button>
+        </div>
+
+        <!-- Email Marketing Agent -->
+        <div class="agent-card" data-category="business">
+          <div class="agent-header">
+            <div class="agent-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="agent-rating">
+              <span class="rating">4.8</span>
+              <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <h3 class="agent-title">Email Marketing Pro</h3>
+          <p class="agent-description">Designs and optimizes email campaigns with A/B testing and personalization.</p>
+          <div class="agent-features">
+            <span class="feature-tag">A/B Testing</span>
+            <span class="feature-tag">Personalization</span>
+            <span class="feature-tag">Analytics</span>
+          </div>
+          <div class="agent-pricing">
+            <span class="price">$0.02</span>
+            <span class="price-unit">per email sent</span>
+          </div>
+          <div class="agent-use-cases">
+            <h4>Use Cases:</h4>
+            <ul>
+              <li>Newsletter campaigns</li>
+              <li>Product launches</li>
+              <li>Customer retention</li>
+              <li>Lead nurturing</li>
+            </ul>
+          </div>
+          <button class="btn-primary agent-hire-btn">Hire Agent</button>
+        </div>
+
+        <!-- Translation Agent -->
+        <div class="agent-card" data-category="content">
+          <div class="agent-header">
+            <div class="agent-icon">
+              <i class="fas fa-language"></i>
+            </div>
+            <div class="agent-rating">
+              <span class="rating">4.9</span>
+              <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <h3 class="agent-title">Universal Translator</h3>
+          <p class="agent-description">Professional translation service supporting 100+ languages with context awareness.</p>
+          <div class="agent-features">
+            <span class="feature-tag">100+ Languages</span>
+            <span class="feature-tag">Context Aware</span>
+            <span class="feature-tag">Industry Specific</span>
+          </div>
+          <div class="agent-pricing">
+            <span class="price">$0.08</span>
+            <span class="price-unit">per 100 words</span>
+          </div>
+          <div class="agent-use-cases">
+            <h4>Use Cases:</h4>
+            <ul>
+              <li>Document translation</li>
+              <li>Website localization</li>
+              <li>Legal document translation</li>
+              <li>Marketing material adaptation</li>
+            </ul>
+          </div>
+          <button class="btn-primary agent-hire-btn">Hire Agent</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Choose Your Agent</h3>
+            <p>Browse our library of specialized AI agents and select the one that fits your needs.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Configure & Deploy</h3>
+            <p>Set up your agent with custom parameters and deploy it instantly.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Get Results</h3>
+            <p>Your AI agent works 24/7 to complete tasks and deliver results in real-time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="pricing">
+    <div class="container">
+      <h2 class="section-title">Simple, Transparent Pricing</h2>
+      <p class="section-subtitle">Pay only for what you use. No hidden fees or monthly commitments.</p>
+
+      <div class="pricing-cards">
+        <div class="pricing-card">
+          <h3>Starter</h3>
+          <div class="price">
+            <span class="currency">$</span>
+            <span class="amount">0</span>
+            <span class="period">/month</span>
+          </div>
+          <ul class="features">
+            <li><i class="fas fa-check"></i> Pay per use</li>
+            <li><i class="fas fa-check"></i> Access to all agents</li>
+            <li><i class="fas fa-check"></i> Basic support</li>
+            <li><i class="fas fa-check"></i> API access</li>
+          </ul>
+          <button class="btn-secondary">Get Started</button>
+        </div>
+
+        <div class="pricing-card featured">
+          <div class="popular-badge">Most Popular</div>
+          <h3>Professional</h3>
+          <div class="price">
+            <span class="currency">$</span>
+            <span class="amount">49</span>
+            <span class="period">/month</span>
+          </div>
+          <ul class="features">
+            <li><i class="fas fa-check"></i> 20% discount on usage</li>
+            <li><i class="fas fa-check"></i> Priority support</li>
+            <li><i class="fas fa-check"></i> Advanced analytics</li>
+            <li><i class="fas fa-check"></i> Custom integrations</li>
+          </ul>
+          <button class="btn-primary">Start Free Trial</button>
+        </div>
+
+        <div class="pricing-card">
+          <h3>Enterprise</h3>
+          <div class="price">
+            <span class="currency">$</span>
+            <span class="amount">199</span>
+            <span class="period">/month</span>
+          </div>
+          <ul class="features">
+            <li><i class="fas fa-check"></i> 40% discount on usage</li>
+            <li><i class="fas fa-check"></i> Dedicated support</li>
+            <li><i class="fas fa-check"></i> Custom AI agents</li>
+            <li><i class="fas fa-check"></i> SLA guarantee</li>
+          </ul>
+          <button class="btn-secondary">Contact Sales</button>
+        </div>
+        <div id="contact" class="section">
+          <h2>Contact Us</h2>
+          <p>
+            For partnerships, enterprise use cases, or support, reach out to us at:
+            <a href="mailto:survetechnologies@gmail.com">survetechnologies@gmail.com</a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to Hire Your First AI Agent?</h2>
+        <p>Join thousands of businesses already using AI agents to automate their workflows.</p>
+        <div class="cta-actions">
+          <button class="btn-primary btn-large">Start Free Trial</button>
+          <button class="btn-secondary btn-large">Schedule Demo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-brand">
+            <i class="fas fa-robot"></i>
+            <span>RentAIAgent.ai</span>
+          </div>
+          <p>Democratizing AI through accessible, on-demand AI agents for everyone.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#">AI Agents</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">API</a></li>
+            <li><a href="#">Documentation</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Status</a></li>
+            <li><a href="#">Security</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2024 RentAIAgent.ai. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Agent Hire Modal -->
+  <div id="hireModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Hire AI Agent</h2>
+      <div id="modalAgentInfo"></div>
+      <form id="hireForm">
+        <div class="form-group">
+          <label for="projectName">Project Name</label>
+          <input type="text" id="projectName" required>
+        </div>
+        <div class="form-group">
+          <label for="projectDescription">Project Description</label>
+          <textarea id="projectDescription" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="budget">Estimated Budget</label>
+          <select id="budget" required>
+            <option value="">Select budget range</option>
+            <option value="under-50">Under $50</option>
+            <option value="50-200">$50 - $200</option>
+            <option value="200-500">$200 - $500</option>
+            <option value="500-1000">$500 - $1,000</option>
+            <option value="over-1000">Over $1,000</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="timeline">Timeline</label>
+          <select id="timeline" required>
+            <option value="">Select timeline</option>
+            <option value="immediate">Immediate (within 24 hours)</option>
+            <option value="week">Within a week</option>
+            <option value="month">Within a month</option>
+            <option value="flexible">Flexible</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" id="cancelHire">Cancel</button>
+          <button type="submit" class="btn-primary">Hire Agent</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
