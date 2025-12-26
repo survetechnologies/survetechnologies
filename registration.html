@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - RentAIAgent.ai</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="registration.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="theme.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="nav">
+      <div class="nav-brand">
+        <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+          <i class="fas fa-robot"></i>
+          <span>RentAIAgent.ai</span>
+        </a>
+      </div>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="index.html" class="btn-secondary">Back to Home</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Registration Container -->
+  <div class="registration-container">
+    <div class="registration-wrapper">
+      <!-- Progress Indicator -->
+      <div class="progress-indicator">
+        <div class="progress-step" data-step="1">
+          <div class="step-number">1</div>
+          <div class="step-label">Basic Info</div>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="2">
+          <div class="step-number">2</div>
+          <div class="step-label">Products</div>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="3">
+          <div class="step-number">3</div>
+          <div class="step-label">Payment</div>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="4">
+          <div class="step-number">4</div>
+          <div class="step-label">Review</div>
+        </div>
+      </div>
+
+      <!-- Registration Form -->
+      <form id="registrationForm" class="registration-form">
+        <!-- Step 1: Basic Information -->
+        <div class="form-step active" data-step="1">
+          <h2 class="step-title">Registration Form - Step 1/4</h2>
+          
+          <div class="form-group">
+            <label for="country">Country <span class="required">*</span></label>
+            <select id="country" name="country" required>
+              <option value="">Select your country</option>
+              <option value="US" selected>United States</option>
+              <option value="CA">Canada</option>
+              <option value="GB">United Kingdom</option>
+              <option value="AU">Australia</option>
+              <option value="DE">Germany</option>
+              <option value="FR">France</option>
+              <option value="IN">India</option>
+              <option value="JP">Japan</option>
+            </select>
+            <small class="currency-note" id="currencyNote">Prices will be displayed in your local currency</small>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email <span class="required">*</span></label>
+            <input type="email" id="email" name="email" required placeholder="Enter your email">
+          </div>
+          <div class="form-group">
+            <label for="password">Password <span class="required">*</span></label>
+            <input type="password" id="password" name="password" required placeholder="Create a password">
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+            <span class="error-message" id="passwordError"></span>
+          </div>
+          <div class="form-group">
+            <label for="name">Name <span class="required">*</span></label>
+            <input type="text" id="name" name="name" required placeholder="Enter your full name">
+          </div>
+          <div class="form-group">
+            <label for="companyName">Company Name <span class="required">*</span></label>
+            <input type="text" id="companyName" name="companyName" required placeholder="Enter your company name">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone <span class="required">*</span></label>
+            <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="window.location.href='index.html'">Cancel</button>
+            <button type="button" class="btn-primary" onclick="nextStep()">Next →</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Product Selection -->
+        <div class="form-step" data-step="2">
+          <h2 class="step-title">Select Products - Step 2/4</h2>
+          <p class="step-subtitle">Browse our AI Agents (Optional - You can add products later):</p>
+          <div class="currency-indicator" id="currencyIndicator">Prices in USD</div>
+          
+          <div class="skip-products-option">
+            <label class="skip-checkbox-label">
+              <input type="checkbox" id="skipProducts" name="skipProducts" onchange="toggleProductSelection()">
+              <span class="skip-checkbox-text">
+                <i class="fas fa-check-circle"></i>
+                <strong>Skip for now</strong> - I'll select products later
+              </span>
+            </label>
+          </div>
+          
+          <div class="products-grid" id="productsGrid">
+            <!-- Products will be populated by JavaScript -->
+          </div>
+
+          <div class="selected-products-summary">
+            <span>Selected: <strong id="selectedCount">0</strong> product(s)</span>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="prevStep()">← Back</button>
+            <button type="button" class="btn-primary" onclick="nextStep()">Next →</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Payment Information (Optional) -->
+        <div class="form-step" data-step="3">
+          <h2 class="step-title">Payment Details - Step 3/4</h2>
+          <p class="step-subtitle">You can add payment information now or later. Registration will complete without payment.</p>
+          
+          <div class="selected-products-review">
+            <h3>Selected Products:</h3>
+            <div id="selectedProductsReview"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="paymentOption">Payment Option <span class="required">*</span></label>
+            <select id="paymentOption" name="paymentOption" required onchange="togglePaymentFields()">
+              <option value="later">Provide Later</option>
+              <option value="now">Add Payment Now</option>
+            </select>
+          </div>
+
+          <div id="paymentFields" style="display: none;">
+            <div class="form-group">
+              <label for="cardNumber">Card Number</label>
+              <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="expiry">Expiry</label>
+                <input type="text" id="expiry" name="expiry" placeholder="MM/YY" maxlength="5">
+              </div>
+              <div class="form-group">
+                <label for="cvc">CVC</label>
+                <input type="text" id="cvc" name="cvc" placeholder="123" maxlength="4">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cardholderName">Cardholder Name</label>
+              <input type="text" id="cardholderName" name="cardholderName" placeholder="Enter cardholder name">
+            </div>
+            
+            <h3 class="section-title">Billing Address</h3>
+            <div class="form-group">
+              <label for="street">Street</label>
+              <input type="text" id="street" name="street" placeholder="Enter street address">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" id="city" name="city" placeholder="Enter city">
+              </div>
+              <div class="form-group">
+                <label for="state">State</label>
+                <input type="text" id="state" name="state" placeholder="Enter state">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="zip">ZIP</label>
+              <input type="text" id="zip" name="zip" placeholder="Enter ZIP code">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="prevStep()">← Back</button>
+            <button type="button" class="btn-primary" onclick="nextStep()">Next →</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Review & Confirm -->
+        <div class="form-step" data-step="4">
+          <h2 class="step-title">Review & Confirm - Step 4/4</h2>
+          <p class="step-subtitle">Review your information:</p>
+          
+          <div class="review-section">
+            <h3>Account</h3>
+            <div class="review-item">
+              <span class="review-label">Email:</span>
+              <span class="review-value" id="reviewEmail"></span>
+            </div>
+            <div class="review-item">
+              <span class="review-label">Name:</span>
+              <span class="review-value" id="reviewName"></span>
+            </div>
+            <div class="review-item">
+              <span class="review-label">Company:</span>
+              <span class="review-value" id="reviewCompany"></span>
+            </div>
+          </div>
+
+          <div class="review-section">
+            <h3>Selected Products</h3>
+            <div id="reviewProducts"></div>
+          </div>
+
+          <div class="review-section">
+            <h3>Payment Method</h3>
+            <div class="review-item">
+              <span class="review-label">Payment:</span>
+              <span class="review-value" id="reviewCard">Optional - Can be added later</span>
+            </div>
+            <div class="review-item">
+              <span class="review-label">Currency:</span>
+              <span class="review-value" id="reviewCurrency"></span>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="prevStep()">← Back</button>
+            <button type="submit" class="btn-primary">Complete Registration</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="email-service.js"></script>
+  <script src="registration.js"></script>
+</body>
+</html>
+
