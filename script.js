@@ -203,24 +203,8 @@ if (heroStats) {
   heroObserver.observe(heroStats);
 }
 
-// Add loading states for buttons
-document.querySelectorAll('.btn-primary, .btn-secondary').forEach(button => {
-  button.addEventListener('click', function(e) {
-    if (this.textContent.includes('Get Started') || this.textContent.includes('Start Free Trial')) {
-      e.preventDefault();
-      const originalText = this.textContent;
-      this.textContent = 'Loading...';
-      this.disabled = true;
-      
-      setTimeout(() => {
-        this.textContent = originalText;
-        this.disabled = false;
-        // Here you would typically redirect to signup/trial page
-        alert('Redirecting to signup page...');
-      }, 1500);
-    }
-  });
-});
+// Navigation is now handled via links in HTML
+// No need for JavaScript redirect handlers
 
 // Search functionality (if needed)
 function searchAgents(query) {

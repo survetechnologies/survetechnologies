@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RentAIAgent.ai - Hire AI Agents for Any Task</title>
   <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="theme.js"></script>
 </head>
 <body>
   <!-- Header -->
@@ -24,8 +25,11 @@
         <li><a href="#contact">Contact</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="btn-secondary">Sign In</button>
-        <button class="btn-primary">Get Started</button>
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="login.html" class="btn-secondary">Sign In</a>
+        <a href="registration.html" class="btn-primary">Get Started</a>
       </div>
       <div class="hamburger">
         <span></span>
@@ -42,9 +46,47 @@
         <h1 class="hero-title">Hire AI Agents for Any Task</h1>
         <p class="hero-subtitle">Access powerful AI agents on-demand. No development required. Pay only for what you use.</p>
         <div class="hero-actions">
-          <button class="btn-primary btn-large">Browse AI Agents</button>
+          <a href="#agents" class="btn-primary btn-large">Browse AI Agents</a>
           <button class="btn-secondary btn-large">Watch Demo</button>
         </div>
+        
+        <!-- How It Works Animation -->
+        <div class="hero-workflow">
+          <div class="workflow-step">
+            <div class="workflow-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <span class="workflow-label">Choose Agent</span>
+          </div>
+          <div class="workflow-arrow">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+          <div class="workflow-step">
+            <div class="workflow-icon">
+              <i class="fas fa-cog"></i>
+            </div>
+            <span class="workflow-label">Configure</span>
+          </div>
+          <div class="workflow-arrow">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+          <div class="workflow-step">
+            <div class="workflow-icon">
+              <i class="fas fa-rocket"></i>
+            </div>
+            <span class="workflow-label">Deploy</span>
+          </div>
+          <div class="workflow-arrow">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+          <div class="workflow-step">
+            <div class="workflow-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <span class="workflow-label">Get Results</span>
+          </div>
+        </div>
+        
         <div class="hero-stats">
           <div class="stat">
             <span class="stat-number">500+</span>
@@ -61,17 +103,19 @@
         </div>
       </div>
       <div class="hero-visual">
-        <div class="floating-card">
-          <i class="fas fa-brain"></i>
-          <span>AI Processing</span>
-        </div>
-        <div class="floating-card">
-          <i class="fas fa-chart-line"></i>
-          <span>Analytics</span>
-        </div>
-        <div class="floating-card">
-          <i class="fas fa-language"></i>
-          <span>Translation</span>
+        <div class="hero-animation-container">
+          <div class="floating-card">
+            <i class="fas fa-brain"></i>
+            <span>AI Processing</span>
+          </div>
+          <div class="floating-card">
+            <i class="fas fa-chart-line"></i>
+            <span>Analytics</span>
+          </div>
+          <div class="floating-card">
+            <i class="fas fa-language"></i>
+            <span>Translation</span>
+          </div>
         </div>
       </div>
     </div>
@@ -422,7 +466,7 @@
             <li><i class="fas fa-check"></i> Basic support</li>
             <li><i class="fas fa-check"></i> API access</li>
           </ul>
-          <button class="btn-secondary">Get Started</button>
+          <a href="registration.html" class="btn-secondary">Get Started</a>
         </div>
 
         <div class="pricing-card featured">
@@ -439,7 +483,7 @@
             <li><i class="fas fa-check"></i> Advanced analytics</li>
             <li><i class="fas fa-check"></i> Custom integrations</li>
           </ul>
-          <button class="btn-primary">Start Free Trial</button>
+          <a href="registration.html" class="btn-primary">Start Free Trial</a>
         </div>
 
         <div class="pricing-card">
@@ -476,7 +520,7 @@
         <h2>Ready to Hire Your First AI Agent?</h2>
         <p>Join thousands of businesses already using AI agents to automate their workflows.</p>
         <div class="cta-actions">
-          <button class="btn-primary btn-large">Start Free Trial</button>
+          <a href="registration.html" class="btn-primary btn-large">Start Free Trial</a>
           <button class="btn-secondary btn-large">Schedule Demo</button>
         </div>
       </div>
@@ -588,5 +632,6 @@
   </div>
 
   <script src="script.js"></script>
+  <script src="theme.js"></script>
 </body>
 </html>
