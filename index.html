@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <script src="theme.js"></script>
+  <script src="demo.js"></script>
 </head>
 <body>
   <!-- Header -->
@@ -21,8 +22,8 @@
         <li><a href="#home">Home</a></li>
         <li><a href="#agents">AI Agents</a></li>
         <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
       <div class="nav-actions">
         <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
@@ -47,7 +48,7 @@
         <p class="hero-subtitle">Access powerful AI agents on-demand. No development required. Pay only for what you use.</p>
         <div class="hero-actions">
           <a href="#agents" class="btn-primary btn-large">Browse AI Agents</a>
-          <button class="btn-secondary btn-large">Watch Demo</button>
+          <button class="btn-secondary btn-large" data-demo onclick="openDemo()">Watch Demo</button>
         </div>
         
         <!-- How It Works Animation -->
@@ -521,7 +522,7 @@
         <p>Join thousands of businesses already using AI agents to automate their workflows.</p>
         <div class="cta-actions">
           <a href="registration.html" class="btn-primary btn-large">Start Free Trial</a>
-          <button class="btn-secondary btn-large">Schedule Demo</button>
+          <button class="btn-secondary btn-large" data-demo onclick="openDemo()">Watch Demo</button>
         </div>
       </div>
     </div>
@@ -631,6 +632,194 @@
 
   </div>
 
+  <!-- Demo Modal -->
+  <div class="demo-modal" id="demoModal">
+    <div class="demo-modal-content">
+      <button class="demo-close" id="closeDemo" aria-label="Close demo">
+        <i class="fas fa-times"></i>
+      </button>
+      
+      <div class="demo-header">
+        <h2>AI Invoice Processing Demo</h2>
+        <p>See how our AI agent automatically extracts, approves, and processes invoices</p>
+      </div>
+
+      <div class="demo-container">
+        <!-- Step 1: Upload Invoice -->
+        <div class="demo-step active" id="step1">
+          <div class="step-indicator">
+            <div class="step-number">1</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-content">
+            <h3>Upload Invoice</h3>
+            <div class="demo-upload-area" id="uploadArea">
+              <div class="upload-icon">
+                <i class="fas fa-file-invoice"></i>
+              </div>
+              <p class="upload-text">Click to upload or drag & drop</p>
+              <p class="upload-hint">PDF, PNG, JPG (Max 10MB)</p>
+              <input type="file" id="invoiceFile" accept=".pdf,.png,.jpg,.jpeg" style="display: none;">
+            </div>
+            <div class="uploaded-file" id="uploadedFile" style="display: none;">
+              <i class="fas fa-file-pdf"></i>
+              <span>invoice_2024_001.pdf</span>
+              <i class="fas fa-check-circle"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: AI Extraction -->
+        <div class="demo-step" id="step2">
+          <div class="step-indicator">
+            <div class="step-number">2</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-content">
+            <h3>AI Extraction in Progress</h3>
+            <div class="extraction-animation">
+              <div class="scan-line"></div>
+              <div class="extraction-items">
+                <div class="extraction-item">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  <span>Extracting vendor name...</span>
+                </div>
+                <div class="extraction-item">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  <span>Extracting invoice number...</span>
+                </div>
+                <div class="extraction-item">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  <span>Extracting amount...</span>
+                </div>
+                <div class="extraction-item">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  <span>Extracting date...</span>
+                </div>
+              </div>
+            </div>
+            <div class="extracted-data" id="extractedData" style="display: none;">
+              <div class="data-card">
+                <div class="data-row">
+                  <span class="data-label">Vendor:</span>
+                  <span class="data-value">ABC Supplies Inc.</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Invoice #:</span>
+                  <span class="data-value">INV-2024-001</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Amount:</span>
+                  <span class="data-value">$2,450.00</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Date:</span>
+                  <span class="data-value">2024-01-15</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Status:</span>
+                  <span class="data-value success">Extracted Successfully</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Approval -->
+        <div class="demo-step" id="step3">
+          <div class="step-indicator">
+            <div class="step-number">3</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-content">
+            <h3>Auto-Approval Process</h3>
+            <div class="approval-process">
+              <div class="approval-check">
+                <i class="fas fa-check-circle"></i>
+                <span>Amount within budget limit</span>
+              </div>
+              <div class="approval-check">
+                <i class="fas fa-check-circle"></i>
+                <span>Vendor verified in system</span>
+              </div>
+              <div class="approval-check">
+                <i class="fas fa-check-circle"></i>
+                <span>No duplicate invoices found</span>
+              </div>
+              <div class="approval-check">
+                <i class="fas fa-check-circle"></i>
+                <span>All required fields present</span>
+              </div>
+            </div>
+            <div class="approval-result" id="approvalResult" style="display: none;">
+              <div class="approval-badge">
+                <i class="fas fa-check-circle"></i>
+                <span>APPROVED</span>
+              </div>
+              <p class="approval-message">Invoice approved automatically. Ready for payment processing.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Payment Gateway -->
+        <div class="demo-step" id="step4">
+          <div class="step-indicator">
+            <div class="step-number">4</div>
+          </div>
+          <div class="step-content">
+            <h3>Payment Gateway Processing</h3>
+            <div class="payment-process">
+              <div class="payment-step">
+                <i class="fas fa-credit-card"></i>
+                <span>Connecting to payment gateway...</span>
+              </div>
+              <div class="payment-step">
+                <i class="fas fa-lock"></i>
+                <span>Securing transaction...</span>
+              </div>
+              <div class="payment-step">
+                <i class="fas fa-paper-plane"></i>
+                <span>Sending payment request...</span>
+              </div>
+            </div>
+            <div class="payment-success" id="paymentSuccess" style="display: none;">
+              <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <h4>Payment Processed Successfully!</h4>
+              <div class="payment-details">
+                <div class="detail-item">
+                  <span>Transaction ID:</span>
+                  <span>TXN-2024-001234</span>
+                </div>
+                <div class="detail-item">
+                  <span>Amount Paid:</span>
+                  <span>$2,450.00</span>
+                </div>
+                <div class="detail-item">
+                  <span>Status:</span>
+                  <span class="status-success">Completed</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-controls">
+        <button class="btn-secondary" id="resetDemo">Restart Demo</button>
+        <button class="btn-primary" id="startDemo">Start Demo</button>
+        <button class="btn-secondary" id="nextStep" style="display: none;">Next Step</button>
+      </div>
+
+      <div class="demo-footer">
+        <p><i class="fas fa-info-circle"></i> This is a simulated demo. Actual processing time may vary.</p>
+      </div>
+    </div>
+  </div>
+
+  <link rel="stylesheet" href="demo.css">
+  <script src="demo.js"></script>
   <script src="script.js"></script>
   <script src="theme.js"></script>
 </body>

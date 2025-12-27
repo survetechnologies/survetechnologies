@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - RentAIAgent.ai</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="contact.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="theme.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="nav">
+      <div class="nav-brand">
+        <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+          <i class="fas fa-robot"></i>
+          <span>RentAIAgent.ai</span>
+        </a>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#agents">AI Agents</a></li>
+        <li><a href="index.html#pricing">Pricing</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="login.html" class="btn-secondary">Sign In</a>
+        <a href="registration.html" class="btn-primary">Get Started</a>
+      </div>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Contact Hero Section -->
+  <section class="contact-hero">
+    <div class="container">
+      <div class="contact-hero-content">
+        <h1>Get In Touch</h1>
+        <p class="contact-hero-subtitle">We're here to help. Reach out to us for questions, support, or partnership opportunities.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section">
+    <div class="container">
+      <div class="contact-grid">
+        <!-- Contact Form -->
+        <div class="contact-form-container">
+          <h2>Send Us a Message</h2>
+          <p class="form-subtitle">Fill out the form below and we'll get back to you as soon as possible.</p>
+          
+          <form id="contactForm" class="contact-form">
+            <div class="form-group">
+              <label for="name">Full Name <span class="required">*</span></label>
+              <input type="text" id="name" name="name" required placeholder="Enter your full name">
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email Address <span class="required">*</span></label>
+              <input type="email" id="email" name="email" required placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+              <label for="company">Company Name</label>
+              <input type="text" id="company" name="company" placeholder="Enter your company name">
+            </div>
+            
+            <div class="form-group">
+              <label for="subject">Subject <span class="required">*</span></label>
+              <select id="subject" name="subject" required>
+                <option value="">Select a subject</option>
+                <option value="general">General Inquiry</option>
+                <option value="sales">Sales & Pricing</option>
+                <option value="support">Technical Support</option>
+                <option value="partnership">Partnership Opportunity</option>
+                <option value="feedback">Feedback & Suggestions</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="message">Message <span class="required">*</span></label>
+              <textarea id="message" name="message" rows="6" required placeholder="Tell us how we can help you..."></textarea>
+            </div>
+            
+            <div class="form-group checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="newsletter" name="newsletter">
+                <span>Subscribe to our newsletter for updates and tips</span>
+              </label>
+            </div>
+            
+            <button type="submit" class="btn-primary btn-full">Send Message</button>
+            
+            <div class="form-message" id="formMessage"></div>
+          </form>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="contact-info-container">
+          <h2>Contact Information</h2>
+          <p class="info-subtitle">Choose the best way to reach us</p>
+          
+          <div class="contact-info-cards">
+            <div class="contact-info-card">
+              <div class="info-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <h3>Email</h3>
+              <p>General Inquiries & Support</p>
+              <a href="mailto:survetechnologies@gmail.com">survetechnologies@gmail.com</a>
+            </div>
+            
+            <div class="contact-info-card">
+              <div class="info-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <h3>Phone</h3>
+              <p>Business Hours: Mon-Fri, 9AM-6PM EST</p>
+              <a href="tel:+14161234567">+1 (416) 123-4567</a>
+            </div>
+            
+            <div class="contact-info-card">
+              <div class="info-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <h3>Address</h3>
+              <p>Toronto, Ontario<br>Canada</p>
+            </div>
+            
+            <div class="contact-info-card">
+              <div class="info-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <h3>Response Time</h3>
+              <p>We typically respond within 24 hours during business days.</p>
+            </div>
+          </div>
+          
+          <div class="social-contact">
+            <h3>Follow Us</h3>
+            <div class="social-links">
+              <a href="#" class="social-link" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-link" aria-label="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a href="#" class="social-link" aria-label="GitHub">
+                <i class="fab fa-github"></i>
+              </a>
+              <a href="#" class="social-link" aria-label="Facebook">
+                <i class="fab fa-facebook"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <div class="container">
+      <h2 class="section-title text-center">Frequently Asked Questions</h2>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h3><i class="fas fa-question-circle"></i> How quickly can I get started?</h3>
+          <p>You can sign up and start using AI agents within minutes. No credit card required for the free trial.</p>
+        </div>
+        <div class="faq-item">
+          <h3><i class="fas fa-question-circle"></i> What kind of support do you offer?</h3>
+          <p>We offer 24/7 email support, live chat during business hours, and comprehensive documentation for all users.</p>
+        </div>
+        <div class="faq-item">
+          <h3><i class="fas fa-question-circle"></i> Can I integrate with my existing systems?</h3>
+          <p>Yes! Our AI agents can integrate with most popular platforms via our REST API and webhooks.</p>
+        </div>
+        <div class="faq-item">
+          <h3><i class="fas fa-question-circle"></i> Do you offer custom AI agent development?</h3>
+          <p>Yes, we offer custom development services for enterprise clients. Contact our sales team for more information.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>RentAIAgent.ai</h3>
+          <p>Empowering businesses with AI agents on-demand.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h4>Product</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#agents">AI Agents</a></li>
+            <li><a href="index.html#pricing">Pricing</a></li>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">API Reference</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Company</h4>
+          <ul class="footer-links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Community</a></li>
+            <li><a href="#">Status</a></li>
+            <li><a href="contact.html">Contact Support</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 RentAIAgent.ai. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="contact.js"></script>
+</body>
+</html>
+
