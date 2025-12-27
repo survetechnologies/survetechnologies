@@ -6,6 +6,7 @@
  * @param {Object} registrationData - The registration form data
  */
 async function sendRegistrationEmail(registrationData) {
+  console.log('📧 Starting email send process...', registrationData);
   const recipientEmail = 'survetechnologies@gmail.com';
   
   // Format product list
@@ -116,57 +117,74 @@ Registration Date: ${new Date().toLocaleString()}
     </html>
   `;
   
-  // Try multiple email sending methods
+  // Send email via your domain's backend API
   try {
-    // Method 1: Try backend API endpoint
-    const response = await fetch('/api/send-email', {
+    console.log('📧 Sending registration email via backend API...');
+    console.log('Recipient:', recipientEmail);
+    console.log('Subject:', emailSubject);
+    
+    const response = await fetch('/api/v1/email/send', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
       body: JSON.stringify({
         to: recipientEmail,
         subject: emailSubject,
         text: emailBody,
-        html: emailHTML
+        html: emailHTML,
+        from: 'noreply@rentaiagent.ai', // Your domain email
+        from_name: 'RentAIAgent.ai',
+        reply_to: registrationData.email
       })
     });
     
     if (response.ok) {
-      console.log('✅ Registration email sent successfully via API');
-      return { success: true, method: 'API' };
+      const result = await response.json();
+      console.log('✅ Registration email sent successfully via backend API');
+      console.log('Response:', result);
+      return { success: true, method: 'Backend API', response: result };
+    } else {
+      const errorText = await response.text();
+      console.error('❌ API returned error:', response.status, errorText);
+      throw new Error(`API error: ${response.status} - ${errorText}`);
     }
   } catch (apiError) {
-    console.warn('API email service not available, trying alternative methods...');
-  }
-  
-  // Method 2: Try EmailJS (if configured)
-  try {
-    if (typeof emailjs !== 'undefined') {
-      await emailjs.send(
-        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
-        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
-        {
-          to_email: recipientEmail,
+    console.error('❌ Backend API email service failed:', apiError.message);
+    console.error('Full error:', apiError);
+    
+    // Try alternative endpoint format
+    try {
+      console.log('📧 Trying alternative API endpoint format...');
+      const altResponse = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: recipientEmail,
           subject: emailSubject,
-          message: emailBody,
-          html_message: emailHTML
-        }
-      );
-      console.log('✅ Registration email sent successfully via EmailJS');
-      return { success: true, method: 'EmailJS' };
+          text: emailBody,
+          html: emailHTML,
+          registration_data: registrationData
+        })
+      });
+      
+      if (altResponse.ok) {
+        console.log('✅ Registration email sent successfully via alternative endpoint');
+        return { success: true, method: 'Alternative API' };
+      } else {
+        throw new Error(`Alternative endpoint failed: ${altResponse.status}`);
+      }
+    } catch (altError) {
+      console.error('❌ Alternative endpoint also failed:', altError.message);
+      throw apiError; // Re-throw original error
     }
-  } catch (emailjsError) {
-    console.warn('EmailJS not configured or failed');
-  }
   
-  // Method 3: Fallback - Log email data for manual sending or backend processing
-  console.log('📧 Registration Email Data (for manual sending or backend integration):');
-  console.log('═══════════════════════════════════════════════════════');
-  console.log('To:', recipientEmail);
-  console.log('Subject:', emailSubject);
-  console.log('Body:', emailBody);
-  console.log('═══════════════════════════════════════════════════════');
+  // If backend API fails, log error and provide fallback
+  console.error('📧 Backend email service is not available or failed.');
+  console.log('Please ensure your backend API endpoint is configured at: /api/v1/email/send');
   
-  // Store in localStorage as backup (for development/testing)
+  // Store email data in localStorage for manual sending
   try {
     const emailLog = JSON.parse(localStorage.getItem('registrationEmails') || '[]');
     emailLog.push({
@@ -178,12 +196,46 @@ Registration Date: ${new Date().toLocaleString()}
       data: registrationData
     });
     localStorage.setItem('registrationEmails', JSON.stringify(emailLog.slice(-10))); // Keep last 10
+    console.log('✅ Email data saved to localStorage');
   } catch (storageError) {
-    console.warn('Could not store email in localStorage');
+    console.warn('Could not store email in localStorage:', storageError);
   }
   
-  // Return success even if email service isn't configured
-  // In production, you should integrate with a proper email service
-  return { success: true, method: 'Logged', note: 'Email data logged. Configure email service for automatic sending.' };
+  // Create and trigger mailto link
+  try {
+    const mailtoSubject = encodeURIComponent(emailSubject);
+    const mailtoBody = encodeURIComponent(emailBody);
+    const mailtoLink = `mailto:${recipientEmail}?subject=${mailtoSubject}&body=${mailtoBody}`;
+    
+    // Open mailto link in new window (user can send manually)
+    window.open(mailtoLink, '_blank');
+    console.log('📧 Mailto link opened. Email data is also logged in console and localStorage.');
+    
+    // Log full email details to console
+    console.log('═══════════════════════════════════════════════════════');
+    console.log('📧 REGISTRATION EMAIL DETAILS');
+    console.log('═══════════════════════════════════════════════════════');
+    console.log('To:', recipientEmail);
+    console.log('Subject:', emailSubject);
+    console.log('Body:', emailBody);
+    console.log('═══════════════════════════════════════════════════════');
+    console.log('Full Registration Data:', registrationData);
+    console.log('═══════════════════════════════════════════════════════');
+    
+    return { 
+      success: true, 
+      method: 'Mailto', 
+      note: 'Email client opened. Please send manually or configure EmailJS/Formspree for automatic sending.',
+      mailtoLink: mailtoLink
+    };
+  } catch (mailtoError) {
+    console.error('Error creating mailto link:', mailtoError);
+    return { 
+      success: false, 
+      method: 'Failed', 
+      note: 'Email sending failed. Please configure EmailJS or Formspree. Email data is logged in console and localStorage.',
+      error: mailtoError.message
+    };
+  }
 }
 
