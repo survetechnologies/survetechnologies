@@ -653,18 +653,47 @@
           </div>
           <div class="step-content">
             <h3>Upload Invoice</h3>
-            <div class="demo-upload-area" id="uploadArea">
-              <div class="upload-icon">
-                <i class="fas fa-file-invoice"></i>
+            <div class="invoice-visual-container">
+              <div class="screen-mockup">
+                <div class="screen-header">
+                  <div class="screen-dots">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <div class="screen-title">Invoice Upload Portal</div>
+                </div>
+                <div class="screen-content">
+                  <div class="demo-upload-area" id="uploadArea">
+                    <div class="upload-icon">
+                      <i class="fas fa-cloud-upload-alt"></i>
+                      <div class="upload-pulse"></div>
+                    </div>
+                    <p class="upload-text">Drag & Drop Invoice</p>
+                    <p class="upload-hint">or click to browse</p>
+                    <div class="upload-progress" id="uploadProgress" style="display: none;">
+                      <div class="progress-bar-fill"></div>
+                    </div>
+                  </div>
+                  <div class="uploaded-file" id="uploadedFile" style="display: none;">
+                    <div class="invoice-preview-animated">
+                      <div class="invoice-preview">
+                        <div class="invoice-header">
+                          <div class="invoice-logo">ABC Supplies Inc.</div>
+                          <div class="invoice-title">INVOICE</div>
+                        </div>
+                        <div class="invoice-body">
+                          <div class="invoice-line">Invoice #: INV-2024-001</div>
+                          <div class="invoice-line">Date: 2024-01-15</div>
+                          <div class="invoice-line">Amount: $2,450.00</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="file-status">
+                      <i class="fas fa-check-circle"></i>
+                      <span>Uploaded Successfully</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <p class="upload-text">Click to upload or drag & drop</p>
-              <p class="upload-hint">PDF, PNG, JPG (Max 10MB)</p>
-              <input type="file" id="invoiceFile" accept=".pdf,.png,.jpg,.jpeg" style="display: none;">
-            </div>
-            <div class="uploaded-file" id="uploadedFile" style="display: none;">
-              <i class="fas fa-file-pdf"></i>
-              <span>invoice_2024_001.pdf</span>
-              <i class="fas fa-check-circle"></i>
             </div>
           </div>
         </div>
@@ -677,48 +706,117 @@
           </div>
           <div class="step-content">
             <h3>AI Extraction in Progress</h3>
-            <div class="extraction-animation">
-              <div class="scan-line"></div>
-              <div class="extraction-items">
-                <div class="extraction-item">
-                  <i class="fas fa-spinner fa-spin"></i>
-                  <span>Extracting vendor name...</span>
+            <div class="extraction-visual">
+              <div class="screen-mockup">
+                <div class="screen-header">
+                  <div class="screen-dots">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <div class="screen-title">AI Extraction Engine</div>
                 </div>
-                <div class="extraction-item">
-                  <i class="fas fa-spinner fa-spin"></i>
-                  <span>Extracting invoice number...</span>
-                </div>
-                <div class="extraction-item">
-                  <i class="fas fa-spinner fa-spin"></i>
-                  <span>Extracting amount...</span>
-                </div>
-                <div class="extraction-item">
-                  <i class="fas fa-spinner fa-spin"></i>
-                  <span>Extracting date...</span>
+                <div class="screen-content">
+                  <div class="ai-extraction-view">
+                    <div class="invoice-scan-container">
+                      <div class="invoice-document" id="invoiceDocument">
+                        <div class="doc-header">ABC Supplies Inc.</div>
+                        <div class="doc-content">
+                          <div class="doc-field" data-field="vendor">
+                            <span class="field-label">Vendor:</span>
+                            <span class="field-value">ABC Supplies Inc.</span>
+                            <div class="extraction-highlight"></div>
+                          </div>
+                          <div class="doc-field" data-field="number">
+                            <span class="field-label">Invoice #:</span>
+                            <span class="field-value">INV-2024-001</span>
+                            <div class="extraction-highlight"></div>
+                          </div>
+                          <div class="doc-field" data-field="amount">
+                            <span class="field-label">Amount:</span>
+                            <span class="field-value">$2,450.00</span>
+                            <div class="extraction-highlight"></div>
+                          </div>
+                          <div class="doc-field" data-field="date">
+                            <span class="field-label">Date:</span>
+                            <span class="field-value">2024-01-15</span>
+                            <div class="extraction-highlight"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="scan-overlay">
+                        <div class="scan-line"></div>
+                        <div class="scan-particles">
+                          <div class="particle"></div>
+                          <div class="particle"></div>
+                          <div class="particle"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="extraction-progress-bar">
+                      <div class="progress-fill" id="extractionProgress"></div>
+                    </div>
+                    <div class="extraction-items">
+                      <div class="extraction-item" data-item="vendor">
+                        <div class="item-icon">
+                          <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <div class="item-content">
+                          <span class="item-label">Vendor Name</span>
+                          <span class="item-status">Extracting...</span>
+                        </div>
+                      </div>
+                      <div class="extraction-item" data-item="number">
+                        <div class="item-icon">
+                          <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <div class="item-content">
+                          <span class="item-label">Invoice Number</span>
+                          <span class="item-status">Extracting...</span>
+                        </div>
+                      </div>
+                      <div class="extraction-item" data-item="amount">
+                        <div class="item-icon">
+                          <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <div class="item-content">
+                          <span class="item-label">Amount</span>
+                          <span class="item-status">Extracting...</span>
+                        </div>
+                      </div>
+                      <div class="extraction-item" data-item="date">
+                        <div class="item-icon">
+                          <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <div class="item-content">
+                          <span class="item-label">Date</span>
+                          <span class="item-status">Extracting...</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="extracted-data" id="extractedData" style="display: none;">
               <div class="data-card">
-                <div class="data-row">
+                <div class="data-row highlight">
                   <span class="data-label">Vendor:</span>
                   <span class="data-value">ABC Supplies Inc.</span>
                 </div>
-                <div class="data-row">
+                <div class="data-row highlight">
                   <span class="data-label">Invoice #:</span>
                   <span class="data-value">INV-2024-001</span>
                 </div>
-                <div class="data-row">
+                <div class="data-row highlight">
                   <span class="data-label">Amount:</span>
                   <span class="data-value">$2,450.00</span>
                 </div>
-                <div class="data-row">
+                <div class="data-row highlight">
                   <span class="data-label">Date:</span>
                   <span class="data-value">2024-01-15</span>
                 </div>
                 <div class="data-row">
                   <span class="data-label">Status:</span>
-                  <span class="data-value success">Extracted Successfully</span>
+                  <span class="data-value success">✓ Extracted Successfully</span>
                 </div>
               </div>
             </div>
@@ -733,30 +831,81 @@
           </div>
           <div class="step-content">
             <h3>Auto-Approval Process</h3>
-            <div class="approval-process">
-              <div class="approval-check">
-                <i class="fas fa-check-circle"></i>
-                <span>Amount within budget limit</span>
-              </div>
-              <div class="approval-check">
-                <i class="fas fa-check-circle"></i>
-                <span>Vendor verified in system</span>
-              </div>
-              <div class="approval-check">
-                <i class="fas fa-check-circle"></i>
-                <span>No duplicate invoices found</span>
-              </div>
-              <div class="approval-check">
-                <i class="fas fa-check-circle"></i>
-                <span>All required fields present</span>
+            <div class="approval-visual">
+              <div class="screen-mockup">
+                <div class="screen-header">
+                  <div class="screen-dots">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <div class="screen-title">Auto-Approval System</div>
+                </div>
+                <div class="screen-content">
+                  <div class="approval-dashboard">
+                    <div class="approval-checks-container">
+                      <div class="approval-check" data-check="budget">
+                        <div class="check-icon">
+                          <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <div class="check-content">
+                          <span class="check-title">Budget Limit</span>
+                          <span class="check-status">Checking...</span>
+                        </div>
+                        <div class="check-progress">
+                          <div class="check-progress-fill"></div>
+                        </div>
+                      </div>
+                      <div class="approval-check" data-check="vendor">
+                        <div class="check-icon">
+                          <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <div class="check-content">
+                          <span class="check-title">Vendor Verification</span>
+                          <span class="check-status">Verifying...</span>
+                        </div>
+                        <div class="check-progress">
+                          <div class="check-progress-fill"></div>
+                        </div>
+                      </div>
+                      <div class="approval-check" data-check="duplicate">
+                        <div class="check-icon">
+                          <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <div class="check-content">
+                          <span class="check-title">Duplicate Check</span>
+                          <span class="check-status">Scanning...</span>
+                        </div>
+                        <div class="check-progress">
+                          <div class="check-progress-fill"></div>
+                        </div>
+                      </div>
+                      <div class="approval-check" data-check="fields">
+                        <div class="check-icon">
+                          <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <div class="check-content">
+                          <span class="check-title">Field Validation</span>
+                          <span class="check-status">Validating...</span>
+                        </div>
+                        <div class="check-progress">
+                          <div class="check-progress-fill"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="approval-result" id="approvalResult" style="display: none;">
-              <div class="approval-badge">
-                <i class="fas fa-check-circle"></i>
-                <span>APPROVED</span>
+              <div class="approval-animation">
+                <div class="approval-badge-large">
+                  <div class="badge-icon">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                  <span>APPROVED</span>
+                </div>
+                <div class="approval-stamp">AUTO-APPROVED</div>
+                <p class="approval-message">Invoice approved automatically. Ready for payment processing.</p>
               </div>
-              <p class="approval-message">Invoice approved automatically. Ready for payment processing.</p>
             </div>
           </div>
         </div>
@@ -768,37 +917,90 @@
           </div>
           <div class="step-content">
             <h3>Payment Gateway Processing</h3>
-            <div class="payment-process">
-              <div class="payment-step">
-                <i class="fas fa-credit-card"></i>
-                <span>Connecting to payment gateway...</span>
-              </div>
-              <div class="payment-step">
-                <i class="fas fa-lock"></i>
-                <span>Securing transaction...</span>
-              </div>
-              <div class="payment-step">
-                <i class="fas fa-paper-plane"></i>
-                <span>Sending payment request...</span>
+            <div class="payment-visual">
+              <div class="screen-mockup">
+                <div class="screen-header">
+                  <div class="screen-dots">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <div class="screen-title">Payment Gateway</div>
+                </div>
+                <div class="screen-content">
+                  <div class="payment-dashboard">
+                    <div class="payment-flow">
+                      <div class="payment-step" data-payment="connect">
+                        <div class="step-icon-wrapper">
+                          <div class="step-icon">
+                            <i class="fas fa-credit-card"></i>
+                          </div>
+                          <div class="step-ring"></div>
+                        </div>
+                        <div class="step-line-connector">
+                          <div class="connector-line"></div>
+                        </div>
+                        <div class="step-info">
+                          <span class="step-title">Connecting</span>
+                          <span class="step-subtitle">Establishing secure connection...</span>
+                        </div>
+                      </div>
+                      <div class="payment-step" data-payment="secure">
+                        <div class="step-icon-wrapper">
+                          <div class="step-icon">
+                            <i class="fas fa-lock"></i>
+                          </div>
+                          <div class="step-ring"></div>
+                        </div>
+                        <div class="step-line-connector">
+                          <div class="connector-line"></div>
+                        </div>
+                        <div class="step-info">
+                          <span class="step-title">Securing</span>
+                          <span class="step-subtitle">Encrypting transaction...</span>
+                        </div>
+                      </div>
+                      <div class="payment-step" data-payment="send">
+                        <div class="step-icon-wrapper">
+                          <div class="step-icon">
+                            <i class="fas fa-paper-plane"></i>
+                          </div>
+                          <div class="step-ring"></div>
+                        </div>
+                        <div class="step-info">
+                          <span class="step-title">Processing</span>
+                          <span class="step-subtitle">Sending payment request...</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="payment-success" id="paymentSuccess" style="display: none;">
-              <div class="success-icon">
-                <i class="fas fa-check-circle"></i>
+              <div class="success-animation">
+                <div class="success-icon-large">
+                  <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="success-particles">
+                  <div class="particle"></div>
+                  <div class="particle"></div>
+                  <div class="particle"></div>
+                  <div class="particle"></div>
+                  <div class="particle"></div>
+                </div>
               </div>
               <h4>Payment Processed Successfully!</h4>
               <div class="payment-details">
-                <div class="detail-item">
+                <div class="detail-item highlight">
                   <span>Transaction ID:</span>
                   <span>TXN-2024-001234</span>
                 </div>
-                <div class="detail-item">
+                <div class="detail-item highlight">
                   <span>Amount Paid:</span>
                   <span>$2,450.00</span>
                 </div>
                 <div class="detail-item">
                   <span>Status:</span>
-                  <span class="status-success">Completed</span>
+                  <span class="status-success">✓ Completed</span>
                 </div>
               </div>
             </div>
@@ -806,10 +1008,36 @@
         </div>
       </div>
 
+      <div class="demo-progress-bar" id="demoProgressBar"></div>
+      
       <div class="demo-controls">
-        <button class="btn-secondary" id="resetDemo">Restart Demo</button>
-        <button class="btn-primary" id="startDemo">Start Demo</button>
-        <button class="btn-secondary" id="nextStep" style="display: none;">Next Step</button>
+        <div class="demo-nav-arrows">
+          <button class="nav-arrow prev" id="prevStep" aria-label="Previous step">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="nav-arrow next" id="nextStepNav" aria-label="Next step">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+        
+        <div class="demo-timeline" id="demoTimeline">
+          <div class="timeline-dot" data-step="Upload" data-step-num="1"></div>
+          <div class="timeline-dot" data-step="Extract" data-step-num="2"></div>
+          <div class="timeline-dot" data-step="Approve" data-step-num="3"></div>
+          <div class="timeline-dot" data-step="Pay" data-step-num="4"></div>
+        </div>
+        
+        <div class="demo-control-buttons">
+          <button class="btn-secondary" id="resetDemo">
+            <i class="fas fa-redo"></i> Restart
+          </button>
+          <button class="btn-primary" id="startDemo">
+            <i class="fas fa-play"></i> Start Demo
+          </button>
+          <button class="btn-secondary" id="pauseDemo" style="display: none;">
+            <i class="fas fa-pause"></i> Pause
+          </button>
+        </div>
       </div>
 
       <div class="demo-footer">
