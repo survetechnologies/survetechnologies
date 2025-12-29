@@ -30,8 +30,15 @@ document.addEventListener('DOMContentLoaded', () => {
       formMessage.style.display = 'none';
       
       try {
+        // Get API URL from configuration
+        const contactUrl = window.AppConfig ? window.AppConfig.getContactUrl() : '/api/v1/contact';
+        
+        if (window.AppConfig) {
+          window.AppConfig.log('info', 'Sending contact form to:', contactUrl);
+        }
+        
         // Send to backend API - will email survetechnologies@gmail.com
-        const response = await fetch('/api/v1/contact', {
+        const response = await fetch(contactUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
