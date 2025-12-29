@@ -316,3 +316,4 @@ def contact():
 - Include all form fields in the email for context
 - Format the email nicely with HTML for better readability
 
+

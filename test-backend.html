@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backend Connection Test - RentAIAgent.ai</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #14b8a6;
+      margin-bottom: 20px;
+    }
+    .test-section {
+      margin: 20px 0;
+      padding: 15px;
+      border: 1px solid #e0e0e0;
+      border-radius: 5px;
+    }
+    .test-section h2 {
+      margin-top: 0;
+      font-size: 1.2em;
+      color: #333;
+    }
+    button {
+      background: #14b8a6;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 5px;
+    }
+    button:hover {
+      background: #06b6d4;
+    }
+    .result {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 14px;
+    }
+    .success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    .loading {
+      color: #856404;
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+    .curl-command {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 10px 0;
+      overflow-x: auto;
+    }
+  </style>
+  <script src="config.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>🔧 Backend Connection Test</h1>
+    <p>Use this page to test your backend connection and diagnose CORS issues.</p>
+    
+    <div class="test-section">
+      <h2>1. Environment Information</h2>
+      <div id="envInfo" class="result info">Loading...</div>
+    </div>
+    
+    <div class="test-section">
+      <h2>2. Backend Connection Test</h2>
+      <button onclick="testConnection()">Test Backend Connection</button>
+      <div id="connectionResult" class="result" style="display: none;"></div>
+    </div>
+    
+    <div class="test-section">
+      <h2>3. Test Registration Endpoint</h2>
+      <button onclick="testRegisterEndpoint()">Test /api/v1/register</button>
+      <div id="registerResult" class="result" style="display: none;"></div>
+    </div>
+    
+    <div class="test-section">
+      <h2>4. CORS Test</h2>
+      <button onclick="testCORS()">Test CORS Configuration</button>
+      <div id="corsResult" class="result" style="display: none;"></div>
+    </div>
+    
+    <div class="test-section">
+      <h2>5. Manual Test Commands</h2>
+      <p>You can also test the backend using these commands in your terminal:</p>
+      <div class="curl-command" id="curlCommands"></div>
+    </div>
+  </div>
+
+  <script>
+    // Display environment info
+    function displayEnvInfo() {
+      if (window.AppConfig) {
+        const info = window.AppConfig.getEnvironmentInfo();
+        const envInfo = document.getElementById('envInfo');
+        envInfo.textContent = 
+          `Environment: ${info.name}\n` +
+          `API Base URL: ${info.apiBaseUrl}\n` +
+          `Frontend Origin: ${window.location.origin}\n` +
+          `Hostname: ${info.hostname}\n` +
+          `Port: ${info.port || 'default'}\n` +
+          `Debug Mode: ${info.debug ? 'Enabled' : 'Disabled'}`;
+      } else {
+        document.getElementById('envInfo').textContent = 'Config not loaded!';
+      }
+      
+      // Display curl commands
+      if (window.AppConfig) {
+        const baseUrl = window.AppConfig.config.apiBaseUrl;
+        const registerUrl = window.AppConfig.getRegisterUrl();
+        const curlCommands = document.getElementById('curlCommands');
+        curlCommands.innerHTML = 
+          `<strong>Test Health Endpoint:</strong>\n` +
+          `curl -v ${baseUrl}/actuator/health\n\n` +
+          `<strong>Test Registration Endpoint (OPTIONS - CORS preflight):</strong>\n` +
+          `curl -X OPTIONS ${registerUrl} \\\n` +
+          `  -H "Origin: ${window.location.origin}" \\\n` +
+          `  -H "Access-Control-Request-Method: POST" \\\n` +
+          `  -H "Access-Control-Request-Headers: Content-Type" \\\n` +
+          `  -v\n\n` +
+          `<strong>Test Registration Endpoint (POST):</strong>\n` +
+          `curl -X POST ${registerUrl} \\\n` +
+          `  -H "Origin: ${window.location.origin}" \\\n` +
+          `  -H "Content-Type: application/json" \\\n` +
+          `  -d '{"email":"test@example.com","password":"test123"}' \\\n` +
+          `  -v`;
+      }
+    }
+    
+    // Test backend connection
+    async function testConnection() {
+      const resultDiv = document.getElementById('connectionResult');
+      resultDiv.style.display = 'block';
+      resultDiv.className = 'result loading';
+      resultDiv.textContent = 'Testing connection...';
+      
+      try {
+        if (window.AppConfig && window.AppConfig.testBackendConnection) {
+          const result = await window.AppConfig.testBackendConnection();
+          resultDiv.className = result.connected ? 'result success' : 'result error';
+          resultDiv.textContent = result.message;
+        } else {
+          throw new Error('AppConfig not available');
+        }
+      } catch (error) {
+        resultDiv.className = 'result error';
+        resultDiv.textContent = `Error: ${error.message}`;
+      }
+    }
+    
+    // Test registration endpoint
+    async function testRegisterEndpoint() {
+      const resultDiv = document.getElementById('registerResult');
+      resultDiv.style.display = 'block';
+      resultDiv.className = 'result loading';
+      resultDiv.textContent = 'Testing registration endpoint...';
+      
+      try {
+        const url = window.AppConfig ? window.AppConfig.getRegisterUrl() : '/api/v1/register';
+        resultDiv.textContent += `\nURL: ${url}\n\n`;
+        
+        // Test OPTIONS (preflight)
+        resultDiv.textContent += 'Testing OPTIONS (CORS preflight)...\n';
+        try {
+          const optionsResponse = await fetch(url, {
+            method: 'OPTIONS',
+            mode: 'cors',
+            headers: {
+              'Origin': window.location.origin,
+              'Access-Control-Request-Method': 'POST',
+              'Access-Control-Request-Headers': 'Content-Type'
+            }
+          });
+          
+          resultDiv.textContent += `OPTIONS Status: ${optionsResponse.status}\n`;
+          resultDiv.textContent += `CORS Headers:\n`;
+          resultDiv.textContent += `  Access-Control-Allow-Origin: ${optionsResponse.headers.get('Access-Control-Allow-Origin') || 'MISSING'}\n`;
+          resultDiv.textContent += `  Access-Control-Allow-Methods: ${optionsResponse.headers.get('Access-Control-Allow-Methods') || 'MISSING'}\n`;
+          resultDiv.textContent += `  Access-Control-Allow-Headers: ${optionsResponse.headers.get('Access-Control-Allow-Headers') || 'MISSING'}\n\n`;
+        } catch (e) {
+          resultDiv.textContent += `OPTIONS Error: ${e.message}\n\n`;
+        }
+        
+        // Test POST
+        resultDiv.textContent += 'Testing POST request...\n';
+        const postResponse = await fetch(url, {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json',
+            'Origin': window.location.origin
+          },
+          body: JSON.stringify({
+            email: 'test@example.com',
+            password: 'test123'
+          })
+        });
+        
+        resultDiv.textContent += `POST Status: ${postResponse.status} ${postResponse.statusText}\n`;
+        
+        if (postResponse.ok) {
+          resultDiv.className = 'result success';
+          const data = await postResponse.json().catch(() => ({}));
+          resultDiv.textContent += `Response: ${JSON.stringify(data, null, 2)}`;
+        } else {
+          resultDiv.className = 'result error';
+          const errorText = await postResponse.text().catch(() => '');
+          resultDiv.textContent += `Error: ${errorText || postResponse.statusText}`;
+        }
+      } catch (error) {
+        resultDiv.className = 'result error';
+        resultDiv.textContent = `Error: ${error.message}\n\nThis is likely a CORS issue. Check the CORS configuration in your backend.`;
+      }
+    }
+    
+    // Test CORS specifically
+    async function testCORS() {
+      const resultDiv = document.getElementById('corsResult');
+      resultDiv.style.display = 'block';
+      resultDiv.className = 'result loading';
+      resultDiv.textContent = 'Testing CORS configuration...\n\n';
+      
+      try {
+        const url = window.AppConfig ? window.AppConfig.getRegisterUrl() : '/api/v1/register';
+        const origin = window.location.origin;
+        
+        resultDiv.textContent += `Frontend Origin: ${origin}\n`;
+        resultDiv.textContent += `Backend URL: ${url}\n\n`;
+        
+        // Make a simple request to check CORS
+        const response = await fetch(url, {
+          method: 'OPTIONS',
+          mode: 'cors',
+          headers: {
+            'Origin': origin,
+            'Access-Control-Request-Method': 'POST'
+          }
+        });
+        
+        const allowOrigin = response.headers.get('Access-Control-Allow-Origin');
+        const allowMethods = response.headers.get('Access-Control-Allow-Methods');
+        const allowHeaders = response.headers.get('Access-Control-Allow-Headers');
+        const allowCredentials = response.headers.get('Access-Control-Allow-Credentials');
+        
+        resultDiv.textContent += 'CORS Response Headers:\n';
+        resultDiv.textContent += `  Access-Control-Allow-Origin: ${allowOrigin || '❌ MISSING'}\n`;
+        resultDiv.textContent += `  Access-Control-Allow-Methods: ${allowMethods || '❌ MISSING'}\n`;
+        resultDiv.textContent += `  Access-Control-Allow-Headers: ${allowHeaders || '❌ MISSING'}\n`;
+        resultDiv.textContent += `  Access-Control-Allow-Credentials: ${allowCredentials || 'Not set'}\n\n`;
+        
+        if (!allowOrigin) {
+          resultDiv.className = 'result error';
+          resultDiv.textContent += '❌ CORS is NOT configured!\n\n';
+          resultDiv.textContent += 'Your backend needs to allow requests from:\n';
+          resultDiv.textContent += `  ${origin}\n\n`;
+          resultDiv.textContent += 'See CORS_SETUP.md for configuration instructions.';
+        } else if (allowOrigin === '*' || allowOrigin === origin) {
+          resultDiv.className = 'result success';
+          resultDiv.textContent += '✅ CORS appears to be configured correctly!';
+        } else {
+          resultDiv.className = 'result error';
+          resultDiv.textContent += `⚠️ CORS is configured, but origin mismatch!\n`;
+          resultDiv.textContent += `Expected: ${origin}\n`;
+          resultDiv.textContent += `Got: ${allowOrigin}`;
+        }
+      } catch (error) {
+        resultDiv.className = 'result error';
+        resultDiv.textContent = `CORS Test Error: ${error.message}\n\n`;
+        resultDiv.textContent += 'This confirms a CORS issue. Your backend is not allowing requests from this origin.';
+      }
+    }
+    
+    // Initialize on load
+    window.addEventListener('load', () => {
+      displayEnvInfo();
+    });
+  </script>
+</body>
+</html>
+

@@ -56,8 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
       submitButton.textContent = 'Signing in...';
       
       try {
+        // Get API URL from configuration
+        const loginUrl = window.AppConfig ? window.AppConfig.getLoginUrl() : '/api/v1/auth/login';
+        
         // Simulate API call (replace with actual API endpoint)
-        // const response = await fetch('/api/v1/auth/login', {
+        // const response = await fetch(loginUrl, {
         //   method: 'POST',
         //   headers: { 'Content-Type': 'application/json' },
         //   body: JSON.stringify(formData)

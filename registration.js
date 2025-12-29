@@ -650,6 +650,20 @@ function setupFormValidation() {
       }
     });
   }
+  
+  // Clear email error when user starts typing
+  const emailInput = document.getElementById('email');
+  if (emailInput) {
+    emailInput.addEventListener('input', () => {
+      const errorDiv = document.getElementById('emailError');
+      if (errorDiv) {
+        errorDiv.remove();
+      }
+      // Reset border style
+      emailInput.style.borderColor = '';
+      emailInput.style.borderWidth = '';
+    });
+  }
 }
 
 // Setup input formatters
@@ -785,22 +799,170 @@ document.getElementById('registrationForm').addEventListener('submit', async (e)
   submitButton.disabled = true;
   submitButton.textContent = 'Processing...';
   
-  // Send email notification
+  // Prepare API request data (matching Java RegisterRequest model format)
+  const apiRequestData = {
+    email: formData.email,
+    password: document.getElementById('password').value,
+    profile: {
+      name: formData.name,
+      companyName: formData.companyName,
+      phone: formData.phone,
+      address: {
+        street: formData.street || 'Not provided',
+        city: formData.city || 'Not provided',
+        state: formData.state || 'Not provided',
+        zip: formData.zip || 'Not provided',
+        country: formData.country
+      }
+    },
+    selectedProducts: selectedProducts.length > 0 ? selectedProducts.map(p => ({
+      productId: p.id,
+      plan: p.plan
+    })) : [],
+    paymentMethod: hasPaymentInfo ? {
+      type: 'card',
+      stripeToken: null, // TODO: Tokenize card with Stripe before sending
+      billingAddress: {
+        street: formData.street,
+        city: formData.city,
+        state: formData.state,
+        zip: formData.zip,
+        country: formData.country
+      }
+    } : null
+  };
+  
   try {
-    // Send email to survetechnologies@gmail.com with registration details
-    await sendRegistrationEmail(submissionData);
+    // Use AppConfig helper for better error handling
+    let apiResponse;
+    let apiResult;
     
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    if (window.AppConfig && window.AppConfig.apiFetch) {
+      // Use the helper function with better error handling
+      window.AppConfig.log('info', 'Calling registration API');
+      try {
+        apiResponse = await window.AppConfig.apiFetch('register', {
+          method: 'POST',
+          body: JSON.stringify(apiRequestData)
+        });
+        apiResult = await apiResponse.json();
+      } catch (fetchError) {
+        // Extract error data from apiFetch helper (it attaches errorData to the error object)
+        const errorData = fetchError.errorData || null;
+        const statusCode = fetchError.statusCode || null;
+        
+        // Check for 409 status and EMAIL_ALREADY_EXISTS code
+        const isDuplicateEmail = (statusCode === 409 && errorData && errorData.code === 'EMAIL_ALREADY_EXISTS') ||
+                                 (statusCode === 409 && errorData && errorData.message && errorData.message.toLowerCase().includes('already registered')) ||
+                                 (errorData && errorData.code === 'EMAIL_ALREADY_EXISTS') ||
+                                 (statusCode === 409);
+        
+        if (isDuplicateEmail) {
+          const duplicateError = new Error(errorData?.message || fetchError.message || 'Email already registered');
+          duplicateError.isDuplicateEmail = true;
+          duplicateError.statusCode = statusCode || 409;
+          duplicateError.errorCode = errorData?.code || 'EMAIL_ALREADY_EXISTS';
+          // Use the email from details field if available, otherwise use formData.email
+          duplicateError.duplicateEmail = errorData?.details || formData.email;
+          throw duplicateError;
+        }
+        
+        // Check error message for duplicate email keywords (fallback)
+        const errorText = fetchError.message || '';
+        const isDuplicateByMessage = errorText.toLowerCase().includes('already registered') ||
+                                     errorText.toLowerCase().includes('email already exists') ||
+                                     errorText.toLowerCase().includes('email is already') ||
+                                     errorText.toLowerCase().includes('duplicate email') ||
+                                     errorText.toLowerCase().includes('email address already');
+        
+        if (isDuplicateByMessage) {
+          const duplicateError = new Error(errorText);
+          duplicateError.isDuplicateEmail = true;
+          duplicateError.statusCode = statusCode || 409;
+          duplicateError.duplicateEmail = errorData?.details || formData.email;
+          throw duplicateError;
+        }
+        throw fetchError;
+      }
+    } else {
+      // Fallback to direct fetch
+      const apiUrl = window.AppConfig ? window.AppConfig.getRegisterUrl() : '/api/v1/register';
+      window.AppConfig?.log('info', 'Calling registration API:', apiUrl);
+      
+      apiResponse = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        mode: 'cors',
+        credentials: 'same-origin',
+        body: JSON.stringify(apiRequestData)
+      });
+      
+      if (!apiResponse.ok) {
+        const errorData = await apiResponse.json().catch(() => ({ message: 'Registration failed' }));
+        const errorMessage = errorData.message || errorData.error || `Registration failed with status ${apiResponse.status}`;
+        
+        // Check if it's a duplicate email error - specifically check for 409 and EMAIL_ALREADY_EXISTS
+        const isDuplicateEmail = apiResponse.status === 409 && (
+          errorData.code === 'EMAIL_ALREADY_EXISTS' ||
+          errorMessage.toLowerCase().includes('already registered') ||
+          errorMessage.toLowerCase().includes('email already exists')
+        ) || (
+          apiResponse.status === 400 &&
+          (errorMessage.toLowerCase().includes('already registered') ||
+           errorMessage.toLowerCase().includes('email already exists') ||
+           errorMessage.toLowerCase().includes('email is already') ||
+           errorMessage.toLowerCase().includes('duplicate email') ||
+           errorMessage.toLowerCase().includes('email address already'))
+        );
+        
+        if (isDuplicateEmail) {
+          // Create a custom error object to identify duplicate email
+          const duplicateError = new Error(errorMessage);
+          duplicateError.isDuplicateEmail = true;
+          duplicateError.statusCode = apiResponse.status;
+          duplicateError.errorCode = errorData.code;
+          // Use the email from details field if available, otherwise use formData.email
+          duplicateError.duplicateEmail = errorData.details || formData.email;
+          throw duplicateError;
+        }
+        
+        throw new Error(errorMessage);
+      }
+      
+      apiResult = await apiResponse.json();
+    }
+    console.log('Registration API response:', apiResult);
+    
+    // Send email notification (using original submissionData format for email)
+    try {
+      // Ensure sendRegistrationEmail is available (from email-service.js)
+      if (typeof sendRegistrationEmail === 'function') {
+        await sendRegistrationEmail(submissionData);
+      } else if (typeof window.sendRegistrationEmail === 'function') {
+        await window.sendRegistrationEmail(submissionData);
+      } else {
+        console.warn('sendRegistrationEmail function not found. Email service may not be loaded.');
+      }
+    } catch (emailError) {
+      console.warn('Email sending failed, but registration was successful:', emailError);
+      // Don't fail registration if email fails
+    }
     
     // Show success message
     const form = document.getElementById('registrationForm');
     form.innerHTML = `
       <div class="success-message">
-        <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 20px;"></i>
+        <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 20px; color: var(--success);"></i>
         <h2 style="margin-bottom: 10px;">Registration Successful!</h2>
         <p>Thank you for registering with RentAIAgent.ai</p>
-        <p style="margin-top: 10px; font-size: 0.9rem;">A confirmation email has been sent to ${formData.email}</p>
+        ${apiResult.data && apiResult.data.userId ? 
+          `<p style="margin-top: 10px; font-size: 0.9rem;">Your account has been created successfully.</p>
+           <p style="margin-top: 5px; font-size: 0.85rem; opacity: 0.9;">User ID: ${apiResult.data.userId}</p>` :
+          `<p style="margin-top: 10px; font-size: 0.9rem;">A confirmation email has been sent to ${formData.email}</p>`
+        }
         <p style="margin-top: 5px; font-size: 0.85rem; opacity: 0.9;">Registration details have been sent to our team.</p>
         <button class="btn-primary" style="margin-top: 20px; width: auto; padding: 12px 30px;" onclick="window.location.href='index.html'">
           Go to Dashboard
@@ -809,7 +971,142 @@ document.getElementById('registrationForm').addEventListener('submit', async (e)
     `;
   } catch (error) {
     console.error('Registration error:', error);
-    alert('Registration completed, but there was an issue sending the email. Please contact support.');
+    
+    // Check if it's a duplicate email error (409 with EMAIL_ALREADY_EXISTS)
+    if (error.isDuplicateEmail) {
+      // Prevent form submission - show warning and ask user to change email
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
+      
+      // Get the duplicate email from error details or formData
+      const duplicateEmail = error.duplicateEmail || formData.email;
+      
+      // Go back to step 1 to update email
+      showStep(1);
+      
+      // Highlight email field
+      const emailInput = document.getElementById('email');
+      if (emailInput) {
+        // Clear the email field so user can enter a new one
+        emailInput.value = '';
+        formData.email = '';
+        
+        // Focus and highlight the field
+        emailInput.focus();
+        emailInput.style.borderColor = '#ef4444';
+        emailInput.style.borderWidth = '2px';
+        emailInput.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.1)';
+        
+        // Show error message below email field
+        let errorDiv = document.getElementById('emailError');
+        if (!errorDiv) {
+          errorDiv = document.createElement('div');
+          errorDiv.id = 'emailError';
+          errorDiv.className = 'error-message';
+          errorDiv.style.color = '#ef4444';
+          errorDiv.style.marginTop = '8px';
+          errorDiv.style.fontSize = '0.875rem';
+          errorDiv.style.padding = '10px';
+          errorDiv.style.backgroundColor = '#fef2f2';
+          errorDiv.style.border = '1px solid #fecaca';
+          errorDiv.style.borderRadius = '6px';
+          emailInput.parentNode.appendChild(errorDiv);
+        }
+        
+        errorDiv.innerHTML = `
+          <div style="display: flex; align-items: start; gap: 8px;">
+            <i class="fas fa-exclamation-triangle" style="color: #ef4444; margin-top: 2px;"></i>
+            <div style="flex: 1;">
+              <strong style="display: block; margin-bottom: 5px;">Email Already Registered</strong>
+              <div style="margin-bottom: 8px; color: #7f1d1d;">
+                The email address <strong>${duplicateEmail}</strong> is already registered in our system.
+              </div>
+              <div style="color: #991b1b; font-size: 0.8125rem;">
+                Please use a different email address to continue with registration, or 
+                <a href="login.html" style="color: var(--accent-primary); text-decoration: underline; font-weight: 600;">log in</a> if you already have an account.
+              </div>
+            </div>
+          </div>
+        `;
+        
+        // Scroll to email field to ensure it's visible
+        emailInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Show alert as well for visibility
+        setTimeout(() => {
+          alert(`⚠️ Email Already Registered\n\nThe email address "${duplicateEmail}" is already registered in our system.\n\nPlease:\n1. Use a different email address, or\n2. Log in if you already have an account\n\nYou can update your email in the form above.`);
+        }, 300);
+        
+        return; // Exit early - prevent form submission
+      }
+    }
+    
+    // Backend API failed - send emails as fallback (TODO: will implement different solution later)
+    console.log('⚠️ Backend registration failed. Sending emails as fallback...');
+    
+    let emailsSent = false;
+    try {
+      // Send email to admin (survetechnologies@gmail.com)
+      if (typeof sendRegistrationEmail === 'function') {
+        await sendRegistrationEmail(submissionData);
+        emailsSent = true;
+      } else if (typeof window.sendRegistrationEmail === 'function') {
+        await window.sendRegistrationEmail(submissionData);
+        emailsSent = true;
+      }
+      
+      // Send confirmation email to user
+      if (typeof sendUserConfirmationEmail === 'function') {
+        await sendUserConfirmationEmail(submissionData);
+      } else if (typeof window.sendUserConfirmationEmail === 'function') {
+        await window.sendUserConfirmationEmail(submissionData);
+      }
+      
+      emailsSent = true;
+    } catch (emailError) {
+      console.error('Email fallback also failed:', emailError);
+    }
+    
+    // Show success message even if backend failed (emails were sent)
+    if (emailsSent) {
+      const form = document.getElementById('registrationForm');
+      form.innerHTML = `
+        <div class="success-message">
+          <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 20px; color: var(--success);"></i>
+          <h2 style="margin-bottom: 10px;">Registration Received!</h2>
+          <p>Thank you for registering with RentAIAgent.ai</p>
+          <p style="margin-top: 10px; font-size: 0.9rem;">A confirmation email has been sent to ${formData.email}</p>
+          <p style="margin-top: 5px; font-size: 0.85rem; opacity: 0.9; color: #f59e0b;">
+            <i class="fas fa-info-circle"></i> Note: Backend service is temporarily unavailable. 
+            Your registration has been saved and our team will process it shortly.
+          </p>
+          <p style="margin-top: 5px; font-size: 0.85rem; opacity: 0.9;">Registration details have been sent to our team.</p>
+          <button class="btn-primary" style="margin-top: 20px; width: auto; padding: 12px 30px;" onclick="window.location.href='index.html'">
+            Go to Home
+          </button>
+        </div>
+      `;
+      return; // Exit early since we showed success
+    }
+    
+    // If emails also failed, show error
+    let errorMessage = error.message || 'Registration failed. Please try again.';
+    
+    // Add helpful hints for common errors
+    if (error.message.includes('403') || error.message.includes('Forbidden')) {
+      errorMessage += '\n\nThis is likely a CORS (Cross-Origin) issue. Please ensure:\n' +
+                      '1. Your backend server is running\n' +
+                      '2. CORS is properly configured on the backend\n' +
+                      '3. The API endpoint allows requests from your frontend origin';
+    } else if (error.message.includes('Network error')) {
+      errorMessage += '\n\nPlease check:\n' +
+                      '1. Backend server is running at ' + (window.AppConfig?.getRegisterUrl() || 'http://localhost:8080') + '\n' +
+                      '2. No firewall is blocking the connection\n' +
+                      '3. The API URL is correct in config.js';
+    }
+    
+    alert(`Registration Error: ${errorMessage}`);
+    
     submitButton.disabled = false;
     submitButton.textContent = originalText;
   }
