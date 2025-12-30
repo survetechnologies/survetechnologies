@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - RentAIAgent.ai</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="theme.js"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="nav">
+      <div class="nav-brand">
+        <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+          <i class="fas fa-robot"></i>
+          <span>RentAIAgent.ai</span>
+        </a>
+      </div>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        <span class="user-email" id="userEmail"></span>
+        <button class="btn-secondary" id="logoutBtn">Logout</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Dashboard Container -->
+  <div class="dashboard-container">
+    <div class="dashboard-header">
+      <h1>Dashboard</h1>
+      <p>Welcome back! Manage your AI agents and track your usage.</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="dashboard-tabs">
+      <button class="tab-btn active" data-tab="products">
+        <i class="fas fa-box"></i>
+        <span>My Products</span>
+      </button>
+      <button class="tab-btn" data-tab="tasks">
+        <i class="fas fa-tasks"></i>
+        <span>Tasks</span>
+      </button>
+      <button class="tab-btn" data-tab="billing">
+        <i class="fas fa-credit-card"></i>
+        <span>Billing</span>
+      </button>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="dashboard-content">
+      <!-- Products Tab -->
+      <div class="tab-content active" id="productsTab">
+        <div class="tab-header">
+          <h2>My Products</h2>
+          <p>Products you have opted for</p>
+        </div>
+        <div class="table-container">
+          <table class="data-table" id="productsTable">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Plan</th>
+                <th>Status</th>
+                <th>Subscription Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productsTableBody">
+              <tr>
+                <td colspan="5" class="loading">Loading products...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tasks Tab -->
+      <div class="tab-content" id="tasksTab">
+        <div class="tab-header">
+          <div>
+            <h2>Tasks</h2>
+            <p>View and manage your submitted tasks</p>
+          </div>
+          <button class="btn-primary" id="createTaskBtn">
+            <i class="fas fa-plus"></i> Create New Task
+          </button>
+        </div>
+        <div class="table-container">
+          <table class="data-table" id="tasksTable">
+            <thead>
+              <tr>
+                <th>Task ID</th>
+                <th>Product</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Submitted Date</th>
+                <th>Completed Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tasksTableBody">
+              <!-- Demo tasks will be loaded here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Billing Tab -->
+      <div class="tab-content" id="billingTab">
+        <div class="tab-header">
+          <h2>Billing & Usage</h2>
+          <p>View your charges and usage statistics</p>
+        </div>
+        <div class="billing-stats">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="totalCharges">$0.00</h3>
+              <p>Total Charges</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-tasks"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="totalTasks">0</h3>
+              <p>Total Tasks</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="completedTasks">0</h3>
+              <p>Completed Tasks</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="pendingTasks">0</h3>
+              <p>Pending Tasks</p>
+            </div>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="data-table" id="billingTable">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Task ID</th>
+                <th>Product</th>
+                <th>Task Type</th>
+                <th>Usage</th>
+                <th>Charge</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="billingTableBody">
+              <!-- Demo billing data will be loaded here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Task Modal -->
+  <div class="modal" id="createTaskModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Create New Task</h2>
+        <button class="modal-close" id="closeTaskModal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <form id="createTaskForm" class="modal-body">
+        <div class="form-group">
+          <label for="taskProduct">Select Product <span class="required">*</span></label>
+          <div class="input-wrapper">
+            <i class="fas fa-box input-icon"></i>
+            <select id="taskProduct" name="productId" required>
+              <option value="">Choose a product...</option>
+              <!-- Products will be populated dynamically -->
+            </select>
+          </div>
+          <div class="form-hint">
+            <a href="#" id="addNewProductLink">+ Add new product</a>
+          </div>
+        </div>
+
+        <div class="form-group" id="newProductGroup" style="display: none;">
+          <label for="newProductName">New Product Name <span class="required">*</span></label>
+          <div class="input-wrapper">
+            <i class="fas fa-tag input-icon"></i>
+            <input type="text" id="newProductName" name="newProductName" placeholder="Enter product name">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="taskType">Task Type <span class="required">*</span></label>
+          <div class="input-wrapper">
+            <i class="fas fa-tasks input-icon"></i>
+            <select id="taskType" name="taskType" required>
+              <option value="">Select task type...</option>
+              <option value="invoice-processing">Invoice Processing</option>
+              <option value="content-generation">Content Generation</option>
+              <option value="data-analysis">Data Analysis</option>
+              <option value="email-automation">Email Automation</option>
+              <option value="document-processing">Document Processing</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="taskDescription">Task Description <span class="required">*</span></label>
+          <div class="input-wrapper">
+            <i class="fas fa-align-left input-icon"></i>
+            <textarea id="taskDescription" name="description" rows="4" required placeholder="Describe what you want the AI agent to do..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="taskPriority">Priority</label>
+          <div class="input-wrapper">
+            <i class="fas fa-flag input-icon"></i>
+            <select id="taskPriority" name="priority">
+              <option value="low">Low</option>
+              <option value="normal" selected>Normal</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="taskDueDate">Due Date (Optional)</label>
+          <div class="input-wrapper">
+            <i class="fas fa-calendar input-icon"></i>
+            <input type="datetime-local" id="taskDueDate" name="dueDate">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="taskAttachments">Attachments (Optional)</label>
+          <div class="input-wrapper">
+            <i class="fas fa-paperclip input-icon"></i>
+            <input type="file" id="taskAttachments" name="attachments" multiple accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.jpg,.png">
+            <small class="form-hint">You can upload multiple files (PDF, DOC, TXT, CSV, XLSX, JPG, PNG)</small>
+          </div>
+        </div>
+
+        <div class="error-message" id="taskErrorMessage"></div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="cancelTaskBtn">Cancel</button>
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-paper-plane"></i> Submit Task
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
+
