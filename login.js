@@ -56,34 +56,114 @@ document.addEventListener('DOMContentLoaded', () => {
       submitButton.textContent = 'Signing in...';
       
       try {
-        // Get API URL from configuration
-        const loginUrl = window.AppConfig ? window.AppConfig.getLoginUrl() : '/api/v1/auth/login';
+        // Step 1: Call login API
+        const loginUrl = window.AppConfig ? window.AppConfig.getLoginUrl() : '/api/v1/login';
+        const loginPayload = {
+          username: formData.email,
+          password: formData.password,
+          userType: formData.userType
+        };
+
+        // SECURITY: Never log passwords - only log URL
+        console.log('Calling login API:', loginUrl);
+        const loginResponse = await fetch(loginUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(loginPayload)
+        });
+
+        if (!loginResponse.ok) {
+          const errorData = await loginResponse.json().catch(() => ({ message: 'Login failed' }));
+          throw new Error(errorData.message || `Login failed with status ${loginResponse.status}`);
+        }
+
+        const loginData = await loginResponse.json();
+        // SECURITY: Don't log sensitive login data
+        console.log('Login successful');
+
+        // Step 2: Get JWT token
+        const tokenUrl = window.AppConfig ? window.AppConfig.getTokenUrl() : '/api/v1/token';
+        const tokenPayload = {
+          email: formData.email,
+          password: formData.password
+        };
+
+        // SECURITY: Never log passwords - only log URL
+        console.log('Calling token API:', tokenUrl);
+        const tokenResponse = await fetch(tokenUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(tokenPayload)
+        });
+
+        if (!tokenResponse.ok) {
+          const errorData = await tokenResponse.json().catch(() => ({ message: 'Token generation failed' }));
+          throw new Error(errorData.message || `Token generation failed with status ${tokenResponse.status}`);
+        }
+
+        const tokenData = await tokenResponse.json();
+        const jwtToken = tokenData.token || tokenData.accessToken || tokenData.jwt;
         
-        // Simulate API call (replace with actual API endpoint)
-        // const response = await fetch(loginUrl, {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(formData)
-        // });
-        
-        // Simulate delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // Store user type in session/localStorage
+        if (!jwtToken) {
+          throw new Error('JWT token not found in response');
+        }
+
+        console.log('Token received successfully');
+
+        // Step 3: Get user's products
+        const myProductsUrl = window.AppConfig ? window.AppConfig.getMyProductsUrl() : '/api/v1/my-products';
+        const productsResponse = await fetch(myProductsUrl, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${jwtToken}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        let productsData = [];
+        if (productsResponse.ok) {
+          const productsResponseData = await productsResponse.json();
+          // Handle API response structure: { success: true, data: [...], message: "..." }
+          if (productsResponseData.success && Array.isArray(productsResponseData.data)) {
+            productsData = productsResponseData.data;
+          } else if (Array.isArray(productsResponseData)) {
+            // Fallback: if response is directly an array
+            productsData = productsResponseData;
+          }
+          console.log('Products loaded:', productsData);
+        } else {
+          console.warn('Failed to load products, continuing with empty list');
+        }
+
+        // Store authentication data
+        const authData = {
+          token: jwtToken,
+          email: formData.email,
+          userType: formData.userType,
+          products: productsData,
+          loginData: loginData
+        };
+
         if (formData.rememberMe) {
+          localStorage.setItem('authToken', jwtToken);
           localStorage.setItem('userType', formData.userType);
           localStorage.setItem('userEmail', formData.email);
+          localStorage.setItem('userProducts', JSON.stringify(productsData));
         } else {
+          sessionStorage.setItem('authToken', jwtToken);
           sessionStorage.setItem('userType', formData.userType);
           sessionStorage.setItem('userEmail', formData.email);
+          sessionStorage.setItem('userProducts', JSON.stringify(productsData));
         }
-        
-        // Redirect based on user type
+
+        // Redirect to dashboard
         if (formData.userType === 'admin') {
-          // Redirect to admin dashboard
           window.location.href = 'admin-dashboard.html';
         } else {
-          // Redirect to user dashboard
           window.location.href = 'dashboard.html';
         }
         
@@ -91,10 +171,10 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Login error:', error);
         const errorMsg = document.getElementById('errorMessage');
         if (errorMsg) {
-          errorMsg.textContent = 'Login failed. Please check your credentials and try again.';
+          errorMsg.textContent = error.message || 'Login failed. Please check your credentials and try again.';
           errorMsg.style.display = 'block';
         } else {
-          alert('Login failed. Please check your credentials and try again.');
+          alert(error.message || 'Login failed. Please check your credentials and try again.');
         }
         submitButton.disabled = false;
         submitButton.textContent = originalText;

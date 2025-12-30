@@ -37,7 +37,11 @@
       apiBaseUrl: 'http://34.228.44.250',
       endpoints: {
         register: '/api/v1/register',
-        login: '/api/v1/auth/login',
+        login: '/api/v1/login',
+        token: '/api/v1/token',
+        myProducts: '/api/v1/my-products',
+        createTask: '/api/v1/tasks',
+        tasks: '/api/v1/tasks',
         contact: '/api/v1/contact',
         email: '/api/v1/email/send',
         emailAlt: '/api/send-email',
@@ -52,7 +56,11 @@
       apiBaseUrl: 'http://34.228.44.250',
       endpoints: {
         register: '/api/v1/register',
-        login: '/api/v1/auth/login',
+        login: '/api/v1/login',
+        token: '/api/v1/token',
+        myProducts: '/api/v1/my-products',
+        createTask: '/api/v1/tasks',
+        tasks: '/api/v1/tasks',
         contact: '/api/v1/contact',
         email: '/api/v1/email/send',
         emailAlt: '/api/send-email',
@@ -67,7 +75,11 @@
       apiBaseUrl: 'http://34.228.44.250',
       endpoints: {
         register: '/api/v1/register',
-        login: '/api/v1/auth/login',
+        login: '/api/v1/login',
+        token: '/api/v1/token',
+        myProducts: '/api/v1/my-products',
+        createTask: '/api/v1/tasks',
+        tasks: '/api/v1/tasks',
         contact: '/api/v1/contact',
         email: '/api/v1/email/send',
         emailAlt: '/api/send-email',
@@ -82,7 +94,11 @@
       apiBaseUrl: 'http://34.228.44.250',
       endpoints: {
         register: '/api/v1/register',
-        login: '/api/v1/auth/login',
+        login: '/api/v1/login',
+        token: '/api/v1/token',
+        myProducts: '/api/v1/my-products',
+        createTask: '/api/v1/tasks',
+        tasks: '/api/v1/tasks',
         contact: '/api/v1/contact',
         email: '/api/v1/email/send',
         emailAlt: '/api/send-email',
@@ -186,6 +202,13 @@
     const url = getApiUrl(endpointKey);
     if (!url) {
       throw new Error(`Invalid endpoint key: ${endpointKey}`);
+    }
+
+    // SECURITY WARNING: Check for HTTP usage (except localhost)
+    if (url.startsWith('http://') && !url.includes('localhost') && !url.includes('127.0.0.1')) {
+      console.warn('⚠️ SECURITY WARNING: API endpoint is using HTTP instead of HTTPS. This is insecure for production!');
+      console.warn('   URL:', url);
+      console.warn('   Recommendation: Use HTTPS to encrypt data in transit.');
     }
 
     const defaultHeaders = {
@@ -323,6 +346,10 @@
     // Convenience methods for common endpoints
     getRegisterUrl: () => getApiUrl('register'),
     getLoginUrl: () => getApiUrl('login'),
+    getTokenUrl: () => getApiUrl('token'),
+    getMyProductsUrl: () => getApiUrl('myProducts'),
+    getCreateTaskUrl: () => getApiUrl('createTask'),
+    getTasksUrl: () => getApiUrl('tasks'),
     getContactUrl: () => getApiUrl('contact'),
     getEmailUrl: () => getApiUrl('email'),
     getEmailAltUrl: () => getApiUrl('emailAlt'),
