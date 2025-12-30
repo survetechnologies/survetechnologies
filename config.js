@@ -79,7 +79,7 @@
     },
     prod: {
       name: 'Production',
-      apiBaseUrl: 'https://api.rentaiagent.ai',
+      apiBaseUrl: 'http://34.228.44.250',
       endpoints: {
         register: '/api/v1/register',
         login: '/api/v1/auth/login',
