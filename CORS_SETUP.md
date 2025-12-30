@@ -333,3 +333,4 @@ If you're still getting 403 errors after configuring CORS:
 4. Check backend logs for CORS-related errors
 5. Ensure no proxy or firewall is interfering
 
+

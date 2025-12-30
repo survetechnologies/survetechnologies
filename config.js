@@ -26,8 +26,8 @@
       return 'test';
     }
     
-    // Production environment (default)
-    return 'prod';
+    // Default to dev environment (changed from prod)
+    return 'dev';
   }
 
   // Environment-specific configurations
@@ -49,7 +49,7 @@
     },
     dev: {
       name: 'Development',
-      apiBaseUrl: 'https://dev-api.rentaiagent.ai',
+      apiBaseUrl: 'http://34.228.44.250',
       endpoints: {
         register: '/api/v1/register',
         login: '/api/v1/auth/login',
@@ -352,6 +352,33 @@
     console.log('Config:', config);
     console.log('API Base URL:', config.apiBaseUrl);
     console.log('Hostname:', window.location.hostname);
+  }
+
+  // Call API when config is loaded (test connection)
+  async function initializeConfig() {
+    if (config.debug) {
+      log('info', 'Initializing configuration and testing API connection...');
+    }
+    
+    try {
+      // Test backend connection
+      const connectionTest = await testBackendConnection();
+      if (connectionTest.connected) {
+        log('info', '✅ API connection successful');
+      } else {
+        log('warn', '⚠️ API connection test failed:', connectionTest.message);
+      }
+    } catch (error) {
+      log('warn', '⚠️ API initialization check failed:', error.message);
+    }
+  }
+
+  // Initialize when DOM is ready or immediately if already loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeConfig);
+  } else {
+    // DOM already loaded, initialize immediately
+    initializeConfig();
   }
 })();
 

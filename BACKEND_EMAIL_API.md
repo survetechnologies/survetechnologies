@@ -200,3 +200,4 @@ curl -X POST http://localhost:3000/api/v1/email/send \
 The frontend is already configured to call your backend API. No changes needed in the frontend code - just make sure your backend endpoint is set up correctly.
 
 
+
