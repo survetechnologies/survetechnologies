@@ -34,7 +34,7 @@
   const environments = {
     local: {
       name: 'Local Development',
-      apiBaseUrl: 'http://localhost:8080', // Spring Boot default port
+      apiBaseUrl: 'http://34.228.44.250',
       endpoints: {
         register: '/api/v1/register',
         login: '/api/v1/auth/login',
@@ -64,7 +64,7 @@
     },
     test: {
       name: 'Test/Staging',
-      apiBaseUrl: 'https://test-api.rentaiagent.ai',
+      apiBaseUrl: 'http://34.228.44.250',
       endpoints: {
         register: '/api/v1/register',
         login: '/api/v1/auth/login',
