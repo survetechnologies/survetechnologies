@@ -3,7 +3,7 @@
 ## 🔴 Critical Security Issues
 
 ### 1. **HTTP Instead of HTTPS (CRITICAL)**
-- **Issue**: API endpoints use `http://34.228.44.250` instead of `https://`
+- **Issue**: API endpoints use `http://13.222.192.244` instead of `https://`
 - **Risk**: Passwords and tokens transmitted in plain text, vulnerable to man-in-the-middle attacks
 - **Impact**: HIGH - Credentials can be intercepted
 - **Fix Required**: 

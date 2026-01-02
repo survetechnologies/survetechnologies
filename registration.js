@@ -1100,7 +1100,7 @@ document.getElementById('registrationForm').addEventListener('submit', async (e)
                       '3. The API endpoint allows requests from your frontend origin';
     } else if (error.message.includes('Network error')) {
       errorMessage += '\n\nPlease check:\n' +
-                      '1. Backend server is running at ' + (window.AppConfig?.getRegisterUrl() || 'http://34.228.44.250/api/v1/register') + '\n' +
+                      '1. Backend server is running at ' + (window.AppConfig?.getRegisterUrl() || 'http://13.222.192.244/api/v1/register') + '\n' +
                       '2. No firewall is blocking the connection\n' +
                       '3. The API URL is correct in config.js';
     }

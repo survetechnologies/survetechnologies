@@ -34,7 +34,7 @@
   const environments = {
     local: {
       name: 'Local Development',
-      apiBaseUrl: 'http://34.228.44.250',
+      apiBaseUrl: 'http://13.222.192.244',
       endpoints: {
         register: '/api/v1/register',
         login: '/api/v1/login',
@@ -53,7 +53,7 @@
     },
     dev: {
       name: 'Development',
-      apiBaseUrl: 'http://34.228.44.250',
+      apiBaseUrl: 'http://13.222.192.244',
       endpoints: {
         register: '/api/v1/register',
         login: '/api/v1/login',
@@ -72,7 +72,7 @@
     },
     test: {
       name: 'Test/Staging',
-      apiBaseUrl: 'http://34.228.44.250',
+      apiBaseUrl: 'http://13.222.192.244',
       endpoints: {
         register: '/api/v1/register',
         login: '/api/v1/login',
@@ -91,7 +91,7 @@
     },
     prod: {
       name: 'Production',
-      apiBaseUrl: 'http://34.228.44.250',
+      apiBaseUrl: 'http://13.222.192.244',
       endpoints: {
         register: '/api/v1/register',
         login: '/api/v1/login',
